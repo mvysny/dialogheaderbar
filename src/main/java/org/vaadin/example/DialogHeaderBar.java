@@ -18,7 +18,8 @@ public class DialogHeaderBar extends HorizontalLayout {
     private boolean maximized = false;
     private String prevWidth = null;
     private String prevHeight = null;
-    private final HeaderBarButton maximizeRestore = new HeaderBarButton();
+    private final HeaderBarButton maximizeRestoreButton = new HeaderBarButton();
+    private final HeaderBarButton closeButton = new HeaderBarButton(VaadinIcon.CLOSE_BIG);
 
     public void setCaption(String caption) {
         this.caption.setText(caption);
@@ -34,8 +35,8 @@ public class DialogHeaderBar extends HorizontalLayout {
 
         getStyle().set("border-bottom", "solid 1px var(--lumo-contrast-10pct)");
         getStyle().set("overflow", "hidden");  // close button overflows /facepalm
-        add(maximizeRestore);
-        maximizeRestore.addClickListener(e -> {
+        add(maximizeRestoreButton);
+        maximizeRestoreButton.addClickListener(e -> {
             if (maximized) {
                 dialog.setWidth(prevWidth);
                 dialog.setHeight(prevHeight);
@@ -50,14 +51,13 @@ public class DialogHeaderBar extends HorizontalLayout {
             update();
         });
 
-        final HeaderBarButton close = new HeaderBarButton(VaadinIcon.CLOSE_BIG);
-        add(close);
-        close.addClickListener(e -> dialog.close());
+        add(closeButton);
+        closeButton.addClickListener(e -> dialog.close());
 
         update();
     }
 
-    private static class HeaderBarButton extends Icon {
+    public static class HeaderBarButton extends Icon {
         public HeaderBarButton() {
             setSize("16px");
             getElement().getStyle().set("margin", "8px");
@@ -76,9 +76,9 @@ public class DialogHeaderBar extends HorizontalLayout {
 
     private void update() {
         if (maximized) {
-            maximizeRestore.setIcon(VaadinIcon.COMPRESS_SQUARE);
+            maximizeRestoreButton.setIcon(VaadinIcon.COMPRESS_SQUARE);
         } else {
-            maximizeRestore.setIcon(VaadinIcon.EXPAND_SQUARE);
+            maximizeRestoreButton.setIcon(VaadinIcon.EXPAND_SQUARE);
         }
         dialog.setDraggable(!maximized);
         dialog.setResizable(!maximized);
@@ -95,5 +95,13 @@ public class DialogHeaderBar extends HorizontalLayout {
             styles.add("height: " + dialog.getHeight());
         }
         dialog.getElement().executeJs("this.$.overlay.$.overlay.style = '" + String.join(";", styles) + "';");
+    }
+
+    public HeaderBarButton getCloseButton() {
+        return closeButton;
+    }
+
+    public HeaderBarButton getMaximizeRestoreButton() {
+        return maximizeRestoreButton;
     }
 }
