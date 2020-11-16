@@ -12,13 +12,11 @@ import com.vaadin.flow.server.PWA;
  */
 @Route("")
 @PWA(name = "Project Base for Vaadin", shortName = "Project Base", enableInstallPrompt = false)
-@CssImport("./styles/shared-styles.css")
-@CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
 @CssImport(value = "./styles/dialog-styles.css", themeFor = "vaadin-dialog-overlay")
 public class MainView extends VerticalLayout {
 
     public MainView() {
-        Button button = new Button("Say hello",
+        Button button = new Button("Open dialog",
                 e -> {
                     final Dialog dlg = new Dialog();
                     // workaround for https://github.com/vaadin/vaadin-dialog/issues/126

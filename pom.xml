@@ -18,6 +18,7 @@
 
         <vaadin.version>14.4.2</vaadin.version>
         <jetty.version>9.4.31.v20200723</jetty.version>
+        <junit.jupiter.version>5.7.0</junit.jupiter.version>
     </properties>
 
     <repositories>
@@ -112,6 +113,25 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Browserless Testing, see https://github.com/mvysny/karibu-testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.mvysny.kaributesting</groupId>
+            <artifactId>karibu-testing-v10</artifactId>
+            <version>1.2.6</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -155,6 +175,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
             </plugin>
         </plugins>
     </build>
