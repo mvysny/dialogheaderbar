@@ -34,7 +34,6 @@ public class DialogHeaderBar extends HorizontalLayout {
         caption.getStyle().set("padding", "4px 16px");
 
         getStyle().set("border-bottom", "solid 1px var(--lumo-contrast-10pct)");
-        getStyle().set("overflow", "hidden");  // close button overflows /facepalm
         add(maximizeRestoreButton);
         maximizeRestoreButton.addClickListener(e -> {
             if (maximized) {
