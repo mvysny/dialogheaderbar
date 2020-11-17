@@ -16,7 +16,7 @@ import java.util.Locale;
  * shows both the close button and the maximize/restore button.
  * <ul>
  *     <li>call {@link #setCloseVisible(boolean)} to hide the close button,</li>
- *     </li>call {@link #setMaximizeVisible(boolean)} to hide the maximize button,</li>
+ *     <li>call {@link #setMaximizeVisible(boolean)} to hide the maximize button,</li>
  *     <li>call {@link #setCaption(String)} to set the header bar caption (defaults to an empty string)</li>
  * </ul>
  *
