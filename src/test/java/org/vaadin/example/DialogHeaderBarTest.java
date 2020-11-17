@@ -12,6 +12,7 @@ import static com.github.mvysny.kaributesting.v10.LocatorJ.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
+ * Uses Karibu-Testing for insanely fast Vaadin unit testing.
  * @author Martin Vysny <mavi@vaadin.com>
  */
 public class DialogHeaderBarTest {

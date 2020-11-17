@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import static com.github.mvysny.kaributesting.v10.LocatorJ.*;
 
 /**
+ * Uses Karibu-Testing for insanely fast Vaadin unit testing.
  * @author Martin Vysny <mavi@vaadin.com>
  */
 public class MainViewTest {
