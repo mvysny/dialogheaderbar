@@ -1,13 +1,13 @@
 package org.vaadin.example;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dialog.Dialog;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.github.mvysny.kaributesting.v10.ButtonKt._click;
+import static com.github.mvysny.kaributesting.v10.LocatorJ.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -25,7 +25,10 @@ public class DialogHeaderBarTest {
 
     @Test
     public void smoke() {
-        UI.getCurrent().add(new DialogHeaderBar(new Dialog()));
+        final Dialog dialog = new Dialog();
+        DialogHeaderBar.addTo(dialog);
+        dialog.open();
+        _assertOne(DialogHeaderBar.class);
     }
 
     @Test
@@ -33,7 +36,7 @@ public class DialogHeaderBarTest {
         final Dialog dialog = new Dialog();
         dialog.open();
         assertTrue(dialog.isOpened());
-        final DialogHeaderBar bar = new DialogHeaderBar(dialog);
+        final DialogHeaderBar bar = DialogHeaderBar.addTo(dialog);
         _click(bar.getCloseButton());
         assertFalse(dialog.isOpened());
     }

@@ -1,19 +1,33 @@
 package org.vaadin.example;
 
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 /**
+ * A component which implements the Dialog header bar. The header bar by default
+ * shows both the close button and the maximize/restore button;
+ * call
+ *
+ * <h4>Integration with Dialog</h4>
+ * Simply add the header bar
+ * as the first component into the dialog itself. To get rid of dialog content
+ * padding, add the <code>no-padding</code> theme to the dialog and include the
+ * <code>dialog-styles.css</code> to your app via
+ * <code>@CssImport(value = "./styles/dialog-styles.css", themeFor = "vaadin-dialog-overlay")</code>.
  * @author Martin Vysny <mavi@vaadin.com>
  */
+@CssImport(value = "./styles/dialog-styles.css", themeFor = "vaadin-dialog-overlay")
 public class DialogHeaderBar extends HorizontalLayout {
     private final Div caption = new Div();
+    @NotNull
     private final Dialog dialog;
     private boolean maximized = false;
     private String prevWidth = null;
@@ -21,10 +35,80 @@ public class DialogHeaderBar extends HorizontalLayout {
     private final HeaderBarButton maximizeRestoreButton = new HeaderBarButton();
     private final HeaderBarButton closeButton = new HeaderBarButton(VaadinIcon.CLOSE_BIG);
 
-    public void setCaption(String caption) {
+    /**
+     * Sets the dialog caption.
+     * @param caption the caption, or blank string to remove the caption.
+     * @return this
+     */
+    @NotNull
+    public DialogHeaderBar setCaption(@NotNull String caption) {
         this.caption.setText(caption);
+        return this;
     }
-    public DialogHeaderBar(Dialog dialog) {
+
+    /**
+     * Returns the dialog caption.
+     * @return the caption, or blank string when there's no caption (the default).
+     */
+    @NotNull
+    public String getCaption() {
+        return this.caption.getText();
+    }
+
+    /**
+     * Makes the close button visible or invisible.
+     * @param isCloseVisible
+     * @return this
+     */
+    @NotNull
+    public DialogHeaderBar setCloseVisible(boolean isCloseVisible) {
+        getCloseButton().setVisible(isCloseVisible);
+        return this;
+    }
+
+    /**
+     * @return true if the close button is visible (the default).
+     */
+    public boolean isCloseVisible() {
+        return getCloseButton().isVisible();
+    }
+
+    /**
+     * Returns the owner dialog.
+     * @return the owner dialog.
+     */
+    @NotNull
+    public Dialog getDialog() {
+        return dialog;
+    }
+
+    /**
+     * Creates a new header bar, inserts it into the dialog, reconfigures the dialog
+     * to have no content padding, and returns the header bar.
+     * @param dialog the dialog to control, not null.
+     * @return the header bar.
+     */
+    @NotNull
+    public static DialogHeaderBar addTo(@NotNull Dialog dialog) {
+        if (dialog.getChildren().anyMatch(it -> it instanceof DialogHeaderBar)) {
+            throw new IllegalArgumentException("Parameter dialog: invalid value " + dialog + ": already has a header bar");
+        }
+
+        // remove padding from content, to have no border around the header bar.
+        // workaround for https://github.com/vaadin/vaadin-dialog/issues/126
+        dialog.getElement().getThemeList().add("no-padding");
+
+        final DialogHeaderBar headerBar = new DialogHeaderBar(dialog);
+        dialog.addComponentAsFirst(headerBar);
+        return headerBar;
+    }
+
+    /**
+     * Creates the header bar.
+     * @param dialog the header bar will control this dialog. However, the header
+     *               bar will not insert automatically into the dialog; use the {@link #addTo(Dialog)} to do that.
+     */
+    public DialogHeaderBar(@NotNull Dialog dialog) {
         this.dialog = dialog;
         getElement().getStyle().set("user-select", "none"); // prevent caption selection when dragging the dialog
         addClassName("draggable"); // in order for the Dialog to be draggable by the header bar
@@ -56,7 +140,7 @@ public class DialogHeaderBar extends HorizontalLayout {
         update();
     }
 
-    public static class HeaderBarButton extends Icon {
+    static class HeaderBarButton extends Icon {
         public HeaderBarButton() {
             setSize("16px");
             getElement().getStyle().set("margin", "8px");
@@ -85,7 +169,11 @@ public class DialogHeaderBar extends HorizontalLayout {
         center(dialog);
     }
 
-    private static void center(Dialog dialog) {
+    /**
+     * Utility function, see https://github.com/vaadin/vaadin-dialog/issues/220 for more details.
+     * @param dialog
+     */
+    private static void center(@NotNull Dialog dialog) {
         final ArrayList<String> styles = new ArrayList<>();
         if (dialog.getWidth() != null) {
             styles.add("width: " + dialog.getWidth());
@@ -96,11 +184,13 @@ public class DialogHeaderBar extends HorizontalLayout {
         dialog.getElement().executeJs("this.$.overlay.$.overlay.style = '" + String.join(";", styles) + "';");
     }
 
-    public HeaderBarButton getCloseButton() {
+    @NotNull
+    HeaderBarButton getCloseButton() {
         return closeButton;
     }
 
-    public HeaderBarButton getMaximizeRestoreButton() {
+    @NotNull
+    HeaderBarButton getMaximizeRestoreButton() {
         return maximizeRestoreButton;
     }
 }
