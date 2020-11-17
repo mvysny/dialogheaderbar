@@ -29,5 +29,6 @@ public class MainViewTest {
     public void testDialog() {
         _click(_get(Button.class, spec -> spec.withCaption("Open dialog")));
         _assertOne(Dialog.class);
+        _assertOne(DialogHeaderBar.class);
     }
 }
