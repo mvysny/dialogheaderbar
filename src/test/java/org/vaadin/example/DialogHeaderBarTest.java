@@ -105,4 +105,14 @@ public class DialogHeaderBarTest {
         assertNull(dialog.getWidth());
         assertNull(dialog.getHeight());
     }
+
+    @Test
+    public void close() {
+        final Dialog dialog = new Dialog();
+        final DialogHeaderBar bar = DialogHeaderBar.addTo(dialog);
+        dialog.open();
+        assertTrue(dialog.isOpened());
+        bar.close();
+        assertFalse(dialog.isOpened());
+    }
 }

@@ -121,6 +121,13 @@ public class DialogHeaderBar extends HorizontalLayout {
         return this;
     }
 
+    /**
+     * Closes the dialog; simply calls {@link Dialog#close()}.
+     */
+    public void close() {
+        dialog.close();
+    }
+
     private void toggleMaximized() {
         if (maximized) {
             dialog.setWidth(prevWidth);
