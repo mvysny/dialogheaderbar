@@ -100,6 +100,42 @@ public class DialogHeaderBar extends HorizontalLayout {
     }
 
     /**
+     * Returns true if the dialog is currently maximized.
+     * @return true if the dialog is currently maximized.
+     */
+    public boolean isMaximized() {
+        return maximized;
+    }
+
+    /**
+     * Sets the dialog to either "maximized" state (taking all the screen's real estate)
+     * or "restored" state (the default).
+     * @param maximized true if the dialog should be maximized, false if the dialog should be in the "restored" state.
+     * @return this
+     */
+    @NotNull
+    public DialogHeaderBar setMaximized(boolean maximized) {
+        if (this.maximized != maximized) {
+            toggleMaximized();
+        }
+        return this;
+    }
+
+    private void toggleMaximized() {
+        if (maximized) {
+            dialog.setWidth(prevWidth);
+            dialog.setHeight(prevHeight);
+            maximized = false;
+        } else {
+            prevWidth = dialog.getWidth();
+            prevHeight = dialog.getHeight();
+            dialog.setWidth("100vw");
+            dialog.setHeight("100vh");
+            maximized = true;
+        }
+    }
+
+    /**
      * Returns the owner dialog.
      *
      * @return the owner dialog.
@@ -149,17 +185,7 @@ public class DialogHeaderBar extends HorizontalLayout {
         getStyle().set("border-bottom", "solid 1px var(--lumo-contrast-10pct)");
         add(maximizeRestoreButton);
         maximizeRestoreButton.addClickListener(e -> {
-            if (maximized) {
-                dialog.setWidth(prevWidth);
-                dialog.setHeight(prevHeight);
-                maximized = false;
-            } else {
-                prevWidth = dialog.getWidth();
-                prevHeight = dialog.getHeight();
-                dialog.setWidth("100vw");
-                dialog.setHeight("100vh");
-                maximized = true;
-            }
+            toggleMaximized();
             update();
         });
 

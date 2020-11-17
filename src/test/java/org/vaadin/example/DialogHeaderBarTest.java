@@ -44,7 +44,7 @@ public class DialogHeaderBarTest {
     }
 
     @Test
-    public void smokeTestCaption() {
+    public void caption() {
         final Dialog dialog = new Dialog();
         final DialogHeaderBar bar = DialogHeaderBar.addTo(dialog);
         dialog.open();
@@ -59,5 +59,50 @@ public class DialogHeaderBarTest {
         bar.setCaption("");
         assertEquals("", bar.getCaption());
         _assertNone(Div.class, spec -> spec.withText("Hello"));
+    }
+
+    @Test
+    public void maximize_smokeTest() {
+        final Dialog dialog = new Dialog();
+        final DialogHeaderBar bar = DialogHeaderBar.addTo(dialog);
+        dialog.open();
+        assertFalse(bar.isMaximized());
+        assertNull(dialog.getWidth());
+        assertNull(dialog.getHeight());
+
+        bar.setMaximized(true);
+        assertTrue(bar.isMaximized());
+        assertEquals("100vw", dialog.getWidth());
+        assertEquals("100vh", dialog.getHeight());
+
+        bar.setMaximized(false);
+        assertFalse(bar.isMaximized());
+        assertNull(dialog.getWidth());
+        assertNull(dialog.getHeight());
+    }
+
+    @Test
+    public void maximize_doubleMaximize() {
+        final Dialog dialog = new Dialog();
+        final DialogHeaderBar bar = DialogHeaderBar.addTo(dialog);
+        dialog.open();
+        assertFalse(bar.isMaximized());
+        assertNull(dialog.getWidth());
+        assertNull(dialog.getHeight());
+
+        bar.setMaximized(true);
+        assertTrue(bar.isMaximized());
+        assertEquals("100vw", dialog.getWidth());
+        assertEquals("100vh", dialog.getHeight());
+
+        bar.setMaximized(true);
+        assertTrue(bar.isMaximized());
+        assertEquals("100vw", dialog.getWidth());
+        assertEquals("100vh", dialog.getHeight());
+
+        bar.setMaximized(false);
+        assertFalse(bar.isMaximized());
+        assertNull(dialog.getWidth());
+        assertNull(dialog.getHeight());
     }
 }
