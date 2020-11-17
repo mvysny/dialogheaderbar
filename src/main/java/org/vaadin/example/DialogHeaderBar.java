@@ -13,15 +13,19 @@ import java.util.Locale;
 
 /**
  * A component which implements the Dialog header bar. The header bar by default
- * shows both the close button and the maximize/restore button;
- * call
+ * shows both the close button and the maximize/restore button.
+ * <ul>
+ *     <li>call {@link #setCloseVisible(boolean)} to hide the close button,</li>
+ *     </li>call {@link #setMaximizeVisible(boolean)} to hide the maximize button,</li>
+ *     <li>call {@link #setCaption(String)} to set the header bar caption (defaults to an empty string)</li>
+ * </ul>
  *
- * <h4>Integration with Dialog</h4>
- * Simply add the header bar
- * as the first component into the dialog itself. To get rid of dialog content
- * padding, add the <code>no-padding</code> theme to the dialog and include the
- * <code>dialog-styles.css</code> to your app via
- * <code>@CssImport(value = "./styles/dialog-styles.css", themeFor = "vaadin-dialog-overlay")</code>.
+ * <h3>Integration with Dialog</h3>
+ * Simply call the {@link #addTo(Dialog)} which integrates the header bar into the dialog.
+ * <p></p>
+ * Warning: this will remove the dialog content padding; simply wrap the contents with
+ * a <code>VerticalLayout</code> which adds padding of its own.
+ *
  * @author Martin Vysny <mavi@vaadin.com>
  */
 @CssImport(value = "./styles/dialog-styles.css", themeFor = "vaadin-dialog-overlay")
@@ -37,6 +41,7 @@ public class DialogHeaderBar extends HorizontalLayout {
 
     /**
      * Sets the dialog caption.
+     *
      * @param caption the caption, or blank string to remove the caption.
      * @return this
      */
@@ -48,6 +53,7 @@ public class DialogHeaderBar extends HorizontalLayout {
 
     /**
      * Returns the dialog caption.
+     *
      * @return the caption, or blank string when there's no caption (the default).
      */
     @NotNull
@@ -57,6 +63,7 @@ public class DialogHeaderBar extends HorizontalLayout {
 
     /**
      * Makes the close button visible or invisible.
+     *
      * @param isCloseVisible
      * @return this
      */
@@ -74,7 +81,27 @@ public class DialogHeaderBar extends HorizontalLayout {
     }
 
     /**
+     * Makes the maximize/restore button visible or invisible.
+     *
+     * @param isMaximizeVisible
+     * @return this
+     */
+    @NotNull
+    public DialogHeaderBar setMaximizeVisible(boolean isMaximizeVisible) {
+        getMaximizeRestoreButton().setVisible(isMaximizeVisible);
+        return this;
+    }
+
+    /**
+     * @return true if the maximize/restore button is visible (the default).
+     */
+    public boolean isMaximizeVisible() {
+        return getMaximizeRestoreButton().isVisible();
+    }
+
+    /**
      * Returns the owner dialog.
+     *
      * @return the owner dialog.
      */
     @NotNull
@@ -85,6 +112,7 @@ public class DialogHeaderBar extends HorizontalLayout {
     /**
      * Creates a new header bar, inserts it into the dialog, reconfigures the dialog
      * to have no content padding, and returns the header bar.
+     *
      * @param dialog the dialog to control, not null.
      * @return the header bar.
      */
@@ -105,6 +133,7 @@ public class DialogHeaderBar extends HorizontalLayout {
 
     /**
      * Creates the header bar.
+     *
      * @param dialog the header bar will control this dialog. However, the header
      *               bar will not insert automatically into the dialog; use the {@link #addTo(Dialog)} to do that.
      */
@@ -171,6 +200,7 @@ public class DialogHeaderBar extends HorizontalLayout {
 
     /**
      * Utility function, see https://github.com/vaadin/vaadin-dialog/issues/220 for more details.
+     *
      * @param dialog
      */
     private static void center(@NotNull Dialog dialog) {
